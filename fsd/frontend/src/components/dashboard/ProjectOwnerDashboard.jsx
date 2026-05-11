@@ -8,6 +8,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import GradientButton from '../ui/GradientButton';
 import { toast } from 'react-hot-toast';
 
+const API = import.meta.env.VITE_API_URL;
+
 const ProjectOwnerDashboard = ({ showApplications, onCloseApplications }) => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -21,7 +23,7 @@ const ProjectOwnerDashboard = ({ showApplications, onCloseApplications }) => {
   useEffect(() => {
     const fetchMyProjects = async () => {
       try {
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/projects`, {
+        const { data } = await axios.get(`${API}/api/projects`, {
           params: { owner: user._id },
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -40,7 +42,7 @@ const ProjectOwnerDashboard = ({ showApplications, onCloseApplications }) => {
   const fetchAllApplications = async () => {
     setLoadingApps(true);
     try {
-      const { data: projects } = await axios.get(`${import.meta.env.VITE_API_URL}/projects`, {
+      const { data: projects } = await axios.get(`${API}/api/projects`, {
         params: { owner: user._id },
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -48,7 +50,7 @@ const ProjectOwnerDashboard = ({ showApplications, onCloseApplications }) => {
 
       const appResults = await Promise.all(
         myProjs.map(p =>
-          axios.get(`${import.meta.env.VITE_API_URL}/applications/${p._id}`, {
+          axios.get(`${API}/api/applications/${p._id}`, {
             headers: { Authorization: `Bearer ${token}` }
           }).then(res => res.data.map(app => ({ ...app, projectTitle: p.title, projectId: p._id })))
             .catch(() => [])
@@ -65,7 +67,7 @@ const ProjectOwnerDashboard = ({ showApplications, onCloseApplications }) => {
   const handleDecision = async (applicationId, status) => {
     setProcessingId(applicationId);
     try {
-      await axios.put(`${import.meta.env.VITE_API_URL}/applications/${applicationId}/${status}`, {}, {
+      await axios.put(`${API}/api/applications/${applicationId}/${status}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success(`Application ${status}!`);
@@ -73,7 +75,7 @@ const ProjectOwnerDashboard = ({ showApplications, onCloseApplications }) => {
         prev.map(app => app._id === applicationId ? { ...app, status } : app)
       );
       // refresh projects to update team members
-      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/projects`, {
+      const { data } = await axios.get(`${API}/api/projects`, {
         params: { owner: user._id },
         headers: { Authorization: `Bearer ${token}` }
       });

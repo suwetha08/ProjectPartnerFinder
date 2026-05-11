@@ -19,6 +19,8 @@ import GlassCard from '../components/ui/GlassCard';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
+const API = import.meta.env.VITE_API_URL;
+
 const TeamChatPage = () => {
   const { projectId } = useParams();
   const { user } = useAuth();
@@ -34,7 +36,7 @@ const TeamChatPage = () => {
     const fetchTeamProjects = async () => {
       try {
         const token = localStorage.getItem('token');
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/projects`, {
+        const { data } = await axios.get(`${API}/api/projects`, {
           params: { member: user._id },
           headers: { Authorization: `Bearer ${token}` }
         });

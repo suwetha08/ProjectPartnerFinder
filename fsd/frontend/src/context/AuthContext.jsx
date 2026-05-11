@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 
+const API = import.meta.env.VITE_API_URL;
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -12,7 +14,7 @@ export const AuthProvider = ({ children }) => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/auth/me`, {
+          const { data } = await axios.get(`${API}/api/auth/me`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           setUser(data);
@@ -27,14 +29,14 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, { email, password });
+    const { data } = await axios.post(`${API}/api/auth/login`, { email, password });
     localStorage.setItem('token', data.token);
     setUser(data);
     return data;
   };
 
   const register = async (userData) => {
-    const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/auth/register`, userData);
+    const { data } = await axios.post(`${API}/api/auth/register`, userData);
     localStorage.setItem('token', data.token);
     setUser(data);
     return data;

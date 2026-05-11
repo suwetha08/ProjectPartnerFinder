@@ -8,6 +8,8 @@ import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 
+const API = import.meta.env.VITE_API_URL;
+
 const StudentDashboard = () => {
   const { user } = useAuth();
   const [recommendations, setRecommendations] = useState([]);
@@ -16,7 +18,7 @@ const StudentDashboard = () => {
     const fetchRecommendations = async () => {
       try {
         const token = localStorage.getItem('token');
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/recommendations`, {
+        const { data } = await axios.get(`${API}/api/recommendations`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setRecommendations(data);

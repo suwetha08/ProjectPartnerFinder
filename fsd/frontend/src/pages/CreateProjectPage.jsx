@@ -9,6 +9,8 @@ import { toast } from 'react-hot-toast';
 import GlassCard from '../components/ui/GlassCard';
 import GradientButton from '../components/ui/GradientButton';
 
+const API = import.meta.env.VITE_API_URL;
+
 const projectSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters'),
   description: z.string().min(20, 'Description must be at least 20 characters'),
@@ -55,7 +57,7 @@ const CreateProjectPage = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.post(`${import.meta.env.VITE_API_URL}/projects/create`, {
+      await axios.post(`${API}/api/projects/create`, {
         ...data,
         requiredSkills: skills,
         techStack

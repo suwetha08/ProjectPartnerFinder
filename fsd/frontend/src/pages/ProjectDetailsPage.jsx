@@ -8,6 +8,8 @@ import GlassCard from '../components/ui/GlassCard';
 import GradientButton from '../components/ui/GradientButton';
 import SkillBadge from '../components/ui/SkillBadge';
 
+const API = import.meta.env.VITE_API_URL;
+
 const ProjectDetailsPage = () => {
   const { id } = useParams();
   const { user } = useAuth();
@@ -21,7 +23,7 @@ const ProjectDetailsPage = () => {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/projects/${id}`);
+        const { data } = await axios.get(`${API}/api/projects/${id}`);
         setProject(data);
       } catch (error) {
         toast.error('Project not found');
@@ -39,7 +41,7 @@ const ProjectDetailsPage = () => {
     setApplying(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.post(`${import.meta.env.VITE_API_URL}/applications/${id}/apply`, {
+      await axios.post(`${API}/api/applications/${id}/apply`, {
         message: applicationMessage
       }, {
         headers: { Authorization: `Bearer ${token}` }

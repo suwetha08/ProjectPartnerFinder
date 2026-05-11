@@ -4,6 +4,8 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import GlassCard from '../components/ui/GlassCard';
 
+const API = import.meta.env.VITE_API_URL;
+
 const NotificationsPage = () => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,7 +14,7 @@ const NotificationsPage = () => {
     const fetchNotifications = async () => {
       try {
         const token = localStorage.getItem('token');
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/notifications`, {
+        const { data } = await axios.get(`${API}/api/notifications`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setNotifications(data);
@@ -28,7 +30,7 @@ const NotificationsPage = () => {
   const markAsRead = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`${import.meta.env.VITE_API_URL}/notifications/${id}/read`, {}, {
+      await axios.put(`${API}/api/notifications/${id}/read`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setNotifications(notifications.map(n => n._id === id ? { ...n, read: true } : n));
@@ -40,7 +42,7 @@ const NotificationsPage = () => {
   const deleteNotification = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`${import.meta.env.VITE_API_URL}/notifications/${id}`, {
+      await axios.delete(`${API}/api/notifications/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setNotifications(notifications.filter(n => n._id !== id));

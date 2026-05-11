@@ -5,6 +5,8 @@ import axios from 'axios';
 import ProjectCard from '../components/projects/ProjectCard';
 import GlassCard from '../components/ui/GlassCard';
 
+const API = import.meta.env.VITE_API_URL;
+
 const ProjectsPage = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,7 +22,7 @@ const ProjectsPage = () => {
     const fetchProjects = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/projects`, {
+        const { data } = await axios.get(`${API}/api/projects`, {
           params: { ...filters, search: searchTerm }
         });
         setProjects(data);
