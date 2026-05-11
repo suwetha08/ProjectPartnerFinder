@@ -25,6 +25,10 @@ app.use(compression());
 app.use(morgan('dev'));
 
 // Routes
+app.get('/', (req, res) => {
+  res.send('ProjectPartnerFinder Backend Running');
+});
+
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', require('./routes/projects'));
 app.use('/api/applications', require('./routes/applications'));
